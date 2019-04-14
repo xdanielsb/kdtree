@@ -45,6 +45,12 @@ struct cmp{
     return a.x[d] < b.x[d];
   }
 };
+
+/*
+ *  Complexity 
+ *    Time: O( nlog(n))
+ *    Mem: O(n^2) line: 78 :'(
+ */
 struct kdtree{
   vector< pt > pts;
   int n;
@@ -56,28 +62,22 @@ struct kdtree{
     for( pt a: pts) a.show();
   }
   node* build(vector< pt> &A, int l, int r, int d){
-    /* for( pt c: A) c.show(); cout <<endl; */
-    if( l >= r) {
-      return new node( d, A[0] );
-    }
+    if( l >= r) return new node( d, A[0] );
     int nd = (d+1)%dim;
-    int mid = ( l + r )/2;
     node *root;
     if( A.size()==2){
-      if( A[0].x[nd] > A[1].x[nd] ){
-        root = new node(nd, A[0]);
+      root = new node(nd, A[0]);
+      if( A[0].x[nd] > A[1].x[nd] )
         root->l = new node( nd, A[1]);
-      }else{
-        root = new node(nd, A[0]);
+      else
         root->r = new node( nd, A[1]);
-      }
       return root;
-    }else{
-      root = new node(d, A[mid]);
     }
-    vector< pt> L, R;
+    int mid = ( l + r )/2;
+    root = new node(d, A[mid]);
+    vector< pt> L, R; // TODO: change this not optimal, maybe nth-element?
     cout << d << " " << A[mid].x[ d ] <<endl;
-    for( int i= l; i <=mid; i++) L.PB( A[i]);
+    for( int i= l; i <mid; i++) L.PB( A[i]);
     for( int j= mid+1; j <=r; j++) R.PB( A[j]);
     sort( L.begin(), L.end(), cmp( nd ));
     sort( R.begin(), R.end(), cmp( nd ));
@@ -87,6 +87,7 @@ struct kdtree{
   }
 };
 
+/*
 void drawTree(node *root){
   queue < node* > q;
   int level = 0;
@@ -94,15 +95,13 @@ void drawTree(node *root){
   q.push( root);
   while(!q.empty()){
     int s = q.size();
-    /* printf("level = %d, dim= %d\n", level, (level)%dim); */
     rep( i, 0, s){
       node *t = q.front(); q.pop();
       if( t->l == nullptr && t->r == nullptr){
-        /* t->p.show(); */
+        t->p.show();
       }else{
         int dx = t->p.x[t->d];
         cout << (level%dim) << " " << dx <<endl;
-        /* cout << "\t( > "<<dx<<")"<<endl<<endl; */
         if(t->l!=nullptr) q.push( t->l);
         if(t->r!=nullptr) q.push( t->r);
       }
@@ -110,6 +109,7 @@ void drawTree(node *root){
     level++;
   }
 }
+*/
 
 int main(){
   cin >> n >> dim;
@@ -117,8 +117,6 @@ int main(){
 
   node *root;
   root  = T.build( T.pts, 0, n-1, 0 );
-  /* bfs( root ); */
-
   
   return 0;
 }
