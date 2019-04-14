@@ -1,10 +1,14 @@
+#!/usr/bin/python
+
+import sys
 import numpy as np
 import matplotlib.pyplot as plt
-
-
+__author__ = "xdanielsb"
+__date__="April,2019"
 def init():
-    fp = open("in", "r").read().split("\n")
-    fl = open("lines", "r").read().split("\n")
+    print( sys.argv )
+    fp = open(sys.argv[1], "r").read().split("\n")
+    fl = open(sys.argv[2], "r").read().split("\n")
     points = [[],[]]
     lines = [[],[]]
     minx, maxx = float('inf'), -float('inf')
@@ -34,10 +38,10 @@ def init():
         color= lines[0][i]
         pos = lines[1][i]
         if( color == 0 ):
-            plt.plot([pos, pos], [miny, maxy], 'k-')
+            plt.plot([pos, pos], [miny, maxy], 'b-')
         else:
-            plt.plot([minx, maxx], [pos, pos], 'k-')
-        plt.pause(2)
+            plt.plot([minx, maxx], [pos, pos], 'r-')
+        plt.pause(0.5)
     plt.show()
 
 

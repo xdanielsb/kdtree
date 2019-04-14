@@ -87,7 +87,7 @@ struct kdtree{
   }
 };
 
-void bfs(node *root){
+void drawTree(node *root){
   queue < node* > q;
   int level = 0;
   if( root == nullptr) return;
@@ -112,9 +112,6 @@ void bfs(node *root){
 }
 
 int main(){
-  #ifdef LOCAL
-    freopen("in", "r",stdin);
-  #endif
   cin >> n >> dim;
   kdtree T( n );
 
