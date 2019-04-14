@@ -4,10 +4,7 @@
 **/
 #include<bits/stdc++.h>
 #define PB push_back
-#define debug1( x ) cout << #x << " = " << x  <<endl;
-#define debug2( x, y) cout <<#x << " = " << x << " , " <<#y << " = " << y <<endl;
 #define rep( a,b, c) for(__typeof(b) a = b; a <(c); a++)
-
 #define all(x) x.begin(), x.end()
 using namespace std;
 using ll = long long;
@@ -48,7 +45,7 @@ struct cmp{
 
 /*
  *  Complexity 
- *    Time: O( nlog(n))
+ *    Time: O( nlog(n)+ n)
  *    Mem: O(n^2) line: 78 :'(
  */
 struct kdtree{
@@ -79,8 +76,8 @@ struct kdtree{
     cout << d << " " << A[mid].x[ d ] <<endl;
     for( int i= l; i <mid; i++) L.PB( A[i]);
     for( int j= mid+1; j <=r; j++) R.PB( A[j]);
-    sort( L.begin(), L.end(), cmp( nd ));
-    sort( R.begin(), R.end(), cmp( nd ));
+    sort( all(L), cmp( nd ));
+    sort( all(R), cmp( nd ));
     root->l = build( L, 0, L.size()-1, nd); 
     root->r = build( R, 0, R.size()-1, nd);
     return root;
