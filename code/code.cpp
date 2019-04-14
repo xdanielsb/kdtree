@@ -5,6 +5,7 @@
 #include<bits/stdc++.h>
 #define debug( x ) cout << #x << " = " << x ;
 #define rep( a,b, c) for(__typeof(b) a = b; a <(c); a++)
+#define all(x) x.begin(), x.end()
 using namespace std;
 using ll = long long;
 
@@ -12,12 +13,21 @@ int n, dim;
 const int MAXD = 100;
 
 struct pt{
-  ll x[ MAXD ];
+  int x[ MAXD ];
   void show(){
     rep( i ,0, dim){
-      if( i ) cout << "\t"; debug( x[i] );
+      if( i ) cout << "\t";
+      printf("x[%d]=%d",i, x[i]);
     }
     cout <<endl;
+  }
+};
+
+struct cmp{
+  int d;
+  cmp( int _d): d(_d){};
+  bool operator()( pt &a, pt &b) const {
+    return a.x[d] < b.x[d];
   }
 };
 
@@ -29,6 +39,11 @@ struct kdtree{
   }
   void show(){
     for( pt a: pts) a.show();
+  }
+  void build(int l, int r, int d){
+    if( l > r ) return;
+    int mid = ( l + r )/2;
+    sort( all(T.pts), cmp(d));
   }
 };
 
