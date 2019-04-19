@@ -2,5 +2,7 @@
 *.*.swp
 *.out
 code/in
+code/nodes
+code/relations
 code/lines
 code/test-output/
