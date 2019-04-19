@@ -1,16 +1,22 @@
 /**
  *    author:  xdanielsb
- *    created: 04.2019       
+ *    created: 04.2019
 **/
 #include<bits/stdc++.h>
 #define PB push_back
+#define F first
+#define S second
 #define rep( a,b, c) for(__typeof(b) a = b; a <(c); a++)
 #define all(x) x.begin(), x.end()
 using namespace std;
 using ll = long long;
-
+typedef pair< int, int > ii;
+typedef vector< int > vi;
 int n, dim;
 const int MAXD = 100;
+vector < ii> partitions ;
+map<int, string> infoNodes;
+map<int, vi> relations;
 
 struct pt{
   int x[ MAXD ];
@@ -23,14 +29,16 @@ struct pt{
   }
 };
 struct node{
+  int id;
   int d;
   node *l, *r;
   pt p;
   node(){
     r = l = nullptr;
   }
-  node( int _d, pt &_p){
-    d = _d; 
+  node(int _id, int _d, pt &_p){
+    d = _d;
+    id = _id;
     p = _p;
     r = l = nullptr;
   }
@@ -42,9 +50,33 @@ struct cmp{
     return a.x[d] < b.x[d];
   }
 };
+string toString( int d){
+  stringstream ss;
+  ss << d;
+  return ss.str();
+}
+void getInfo( node *root, node *father=nullptr ){
+  if( root == nullptr) return;
+  string info = "";
+  if(root->l != nullptr || root->r!=nullptr){
+    info = "> "+toString( root->p.x[root->d])+"  * ";
+  }
+  info.PB('[');
+  rep( i, 0, dim){
+    if( i > 0 )info.PB(',');
+    info.append(toString(root->p.x[i]));
+  }
+  info.PB(']');
+  infoNodes[root->id] = info;
+  if( father!= nullptr){
+    relations[father->id].PB( root->id );
+  }
+  getInfo( root->l, root);
+  getInfo( root->r, root);
+}
 
 /*
- *  Complexity 
+ *  Complexity
  *    Time: O( nlog(n)+ n)
  *    Mem: O(n^2) line: 78 :'(
  */
@@ -58,62 +90,63 @@ struct kdtree{
   void show(){
     for( pt a: pts) a.show();
   }
-  node* build(vector< pt> &A, int l, int r, int d){
-    if( l >= r) return new node( d, A[0] );
+  node* build(int id, vector< pt> &A, int l, int r, int d){
+    if( l >= r) return new node(id, d, A[0] );
     int nd = (d+1)%dim;
     node *root;
     if( A.size()==2){
-      root = new node(nd, A[0]);
-      if( A[0].x[nd] > A[1].x[nd] )
-        root->l = new node( nd, A[1]);
-      else
-        root->r = new node( nd, A[1]);
+      root = new node(id, nd, A[0]);
+      partitions.PB( {d, A[0].x[d]});
+      if( A[0].x[nd] > A[1].x[nd] ) root->l = new node(id*2, nd, A[1]);
+      else  root->r = new node(id*2+1, nd, A[1]);
       return root;
     }
-    int mid = ( l + r )/2;
-    root = new node(d, A[mid]);
-    vector< pt> L, R; // TODO: change this not optimal, maybe nth-element?
-    cout << d << " " << A[mid].x[ d ] <<endl;
-    for( int i= l; i <mid; i++) L.PB( A[i]);
-    for( int j= mid+1; j <=r; j++) R.PB( A[j]);
+    int mid = ( l + r ) >> 1;
+
+    // storage partitions
+    partitions.PB( {d, A[mid].x[d]});
+
+    root = new node(id, d, A[mid]);
+    vector< pt> L, R; // TODO:  not optimal, maybe nth-element?, why? creating copies
+    rep(i, l, mid) L.PB( A[i] ) ;
+    rep(i, mid+1, r+1) R.PB( A[i] );
     sort( all(L), cmp( nd ));
     sort( all(R), cmp( nd ));
-    root->l = build( L, 0, L.size()-1, nd); 
-    root->r = build( R, 0, R.size()-1, nd);
+    root->l = build(id*2, L, 0, L.size()-1, nd);
+    root->r = build(id*2+1, R, 0, R.size()-1, nd);
     return root;
   }
 };
 
-/*
-void drawTree(node *root){
-  queue < node* > q;
-  int level = 0;
-  if( root == nullptr) return;
-  q.push( root);
-  while(!q.empty()){
-    int s = q.size();
-    rep( i, 0, s){
-      node *t = q.front(); q.pop();
-      if( t->l == nullptr && t->r == nullptr){
-        t->p.show();
-      }else{
-        int dx = t->p.x[t->d];
-        cout << (level%dim) << " " << dx <<endl;
-        if(t->l!=nullptr) q.push( t->l);
-        if(t->r!=nullptr) q.push( t->r);
-      }
-    }
-    level++;
-  }
-}
-*/
 
 int main(){
   cin >> n >> dim;
+  partitions.clear();
   kdtree T( n );
 
   node *root;
-  root  = T.build( T.pts, 0, n-1, 0 );
-  
+  root  = T.build(1, T.pts, 0, n-1, 0 );
+
+  /* Print partitions */
+  ofstream lines ("lines");
+  for( ii x: partitions){
+    lines << x.F << " " << x.S <<endl;
+  }
+  lines.close();
+
+  /* Get info graph */
+  getInfo( root );
+  ofstream nodes ("nodes");
+  for( pair< int, string> c: infoNodes){
+    nodes << c.F << " " << c.S <<endl;
+  }
+  nodes.close();
+  ofstream rel("relations");
+  for( pair< int, vi > r: relations){
+    for( int x: r.S) rel << r.F << " " << x <<endl;
+  }
+  rel.close();
+
+
   return 0;
 }
