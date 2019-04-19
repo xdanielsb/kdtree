@@ -1,8 +1,8 @@
 *.swp
 *.*.swp
 *.out
-code/in
-code/nodes
-code/relations
-code/lines
-code/test-output/
+sim/in
+sim/nodes
+sim/relations
+sim/lines
+sim/test-output/
