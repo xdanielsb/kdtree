@@ -75,45 +75,34 @@ void getInfo( node *root, node *father=nullptr ){
   getInfo( root->r, root);
 }
 
-/*
- *  Complexity
- *    Time: O( nlog(n)+ n)
- *    Mem: O(n^2) line: 78 :'(
- */
 struct kdtree{
   vector< pt > pts;
   int n;
   kdtree(int _n ): pts( _n ), n( _n ){
     rep( i, 0, n) rep(j, 0, dim) cin >> pts[ i ].x[ j ];
-    sort( all(pts), cmp(0));
   }
   void show(){
     for( pt a: pts) a.show();
   }
-  node* build(int id, vector< pt> &A, int l, int r, int d){
-    if( l >= r) return new node(id, d, A[0] );
+  node* build(int id,  int l, int r, int d){
+    if( l >= r) return new node(id, d, pts[l] );
     int nd = (d+1)%dim;
     node *root;
-    if( A.size()==2){
-      root = new node(id, nd, A[0]);
-      partitions.PB( {d, A[0].x[d]});
-      if( A[0].x[nd] > A[1].x[nd] ) root->l = new node(id*2, nd, A[1]);
-      else  root->r = new node(id*2+1, nd, A[1]);
+    sort( pts.begin()+l, pts.begin()+r+1, cmp( d ));
+    if( r-l == 1 ){
+      root = new node(id, nd, pts[l]);
+      partitions.PB( {d, pts[l].x[d]});
+      if( pts[l].x[nd] > pts[r].x[nd] ) root->l = new node(id*2, nd, pts[r]);
+      else  root->r = new node(id*2+1, nd, pts[r]);
       return root;
     }
     int mid = ( l + r ) >> 1;
-
     // storage partitions
-    partitions.PB( {d, A[mid].x[d]});
+    partitions.PB( {d, pts[mid].x[d]});
 
-    root = new node(id, d, A[mid]);
-    vector< pt> L, R; // TODO:  not optimal, maybe nth-element?, why? creating copies
-    rep(i, l, mid) L.PB( A[i] ) ;
-    rep(i, mid+1, r+1) R.PB( A[i] );
-    sort( all(L), cmp( nd ));
-    sort( all(R), cmp( nd ));
-    root->l = build(id*2, L, 0, L.size()-1, nd);
-    root->r = build(id*2+1, R, 0, R.size()-1, nd);
+    root = new node(id, d, pts[mid]);
+    root->l = build(id*2,l, mid-1, nd);
+    root->r = build(id*2+1, mid+1, r, nd);
     return root;
   }
 };
@@ -125,7 +114,7 @@ int main(){
   kdtree T( n );
 
   node *root;
-  root  = T.build(1, T.pts, 0, n-1, 0 );
+  root  = T.build(1, 0, n-1, 0 );
 
   /* Print partitions */
   ofstream lines ("lines");
