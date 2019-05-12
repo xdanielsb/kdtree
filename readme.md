@@ -1,9 +1,6 @@
 # kdtree
 
 This repo has the content regarding the presentation of KD-Tree that will take place at 'Universidad Distrital' contains slides, a simulation, and exercises regarding k-dimensional-tree. The repository is composed by:
- - code: it has different implementations of some competitive programmers
-  - Implementation UNAL
-  - Implementation Standford
  - sim: it has the my own implementation of kd-tree 'code.cpp' and the packages need to simulate; see after to learn how to run the simulation  
  - slides: coming soon
 
