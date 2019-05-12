@@ -12,11 +12,15 @@ using namespace std;
 using ll = long long;
 typedef pair< int, int > ii;
 typedef vector< int > vi;
+typedef long double lf;
+const int oo = INT_MAX  ;
 int n, dim;
 const int MAXD = 100;
 vector < ii> partitions ;
 map<int, string> infoNodes;
 map<int, vi> relations;
+
+
 
 struct pt{
   int x[ MAXD ];
@@ -26,6 +30,10 @@ struct pt{
       printf("x[%d]=%d",i, x[i]);
     }
     cout <<endl;
+  }
+  bool operator==( pt &c) const{
+    rep(i ,0, dim) if (x[i]!=c.x[i]) return false;
+    return true;
   }
 };
 struct node{
@@ -75,6 +83,18 @@ void getInfo( node *root, node *father=nullptr ){
   getInfo( root->r, root);
 }
 
+// utilities
+lf dist( pt &a, pt &b){
+ lf res = .0;
+ rep( i, 0, dim) res += pow( a.x[i]-b.x[i], 2.0);
+ return res;
+}
+unsigned int getRnd( int n){
+    static unsigned int seed = 5323;
+    seed = 8253729 * seed + 2396403;
+    return seed  % n;
+}
+
 struct kdtree{
   vector< pt > pts;
   int n;
@@ -85,28 +105,51 @@ struct kdtree{
     for( pt a: pts) a.show();
   }
   node* build(int id,  int l, int r, int d){
-    if( l >= r) return new node(id, d, pts[l] );
-    int nd = (d+1)%dim;
     node *root;
-    sort( pts.begin()+l, pts.begin()+r+1, cmp( d ));
-    if( r-l == 1 ){
-      root = new node(id, nd, pts[l]);
-      partitions.PB( {d, pts[l].x[d]});
-      if( pts[l].x[nd] > pts[r].x[nd] ) root->l = new node(id*2, nd, pts[r]);
-      else  root->r = new node(id*2+1, nd, pts[r]);
-      return root;
+    if( l >= r){
+      return new node(id, d, pts[l] );
     }
-    int mid = ( l + r ) >> 1;
+    int nd = (d+1)%dim;
+    int mid = r + (l-r)/2;
+    nth_element(pts.begin()+l, pts.begin()+mid,pts.begin()+r+1, cmp(d));
     // storage partitions
     partitions.PB( {d, pts[mid].x[d]});
-
     root = new node(id, d, pts[mid]);
-    root->l = build(id*2,l, mid-1, nd);
-    root->r = build(id*2+1, mid+1, r, nd);
+    root->l = build(id*2,l, mid-1, d^1);
+    root->r = build(id*2+1, mid+1, r, d^1);
     return root;
+  }
+  void findNearest( pt &to, node *root,  pt &res, lf &dis, int d=0){
+    if( root == nullptr) return;
+    lf aux = dist( to, root->p );
+    if( aux > 0 && dis > aux ) {
+      res = root->p;
+      dis = aux;
+    }
+    lf delta = pow(root->p.x[d] - to.x[d], 2.0);
+    int nd = (d+1)%dim;
+    if(to.x[d] > root->p.x[d] ){
+      findNearest( to, root->r, res, dis, nd);
+      if( dis > delta) findNearest( to, root->l, res, dis, nd);
+    }else{
+      findNearest( to, root->l, res, dis, nd);
+      if( dis > delta) findNearest( to, root->r, res, dis, nd);
+    }
   }
 };
 
+bool check( vector< pt > &T, pt to, pt ans, lf dans){
+  pt aux;
+  lf dis = oo;
+  for( pt &a: T){
+    lf d = dist( to, a);
+    if( d > 0 && dis > d){
+      dis = d;
+      aux = a;
+    }
+  }
+  return  aux ==  ans || dis == dans;
+}
 
 int main(){
   cin >> n >> dim;
@@ -136,6 +179,21 @@ int main(){
   }
   rel.close();
 
+
+  // find nearest of three random points
+  set< int > rnd; int tot =n/2;
+  while( rnd.size() <= tot){
+    rnd.insert( getRnd(n));
+  }
+  int count = 0;
+  for( int el: rnd){
+    lf dis = oo;
+    pt res;
+    T.findNearest(T.pts[el], root, res, dis);
+    count+= check(T.pts, T.pts[el], res, dis);
+
+  }
+  cout << "The software has passed "<< count << " Cases over " << rnd.size() << " Cases "<<endl;
 
   return 0;
 }
