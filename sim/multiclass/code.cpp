@@ -11,9 +11,9 @@
 #define all(x) x.begin(), x.end()
 using namespace std;
 using ll = long long;
-typedef pair< int, int > ii;
-typedef vector< int > vi;
 typedef long double lf;
+typedef pair< lf, lf > ii;
+typedef vector< int > vi;
 const int oo = INT_MAX  ;
 int n, dim;
 const int MAXD = 100;
@@ -23,13 +23,13 @@ map<int, vi> relations;
 
 // class is the value in x[dim]
 struct pt{
-  int x[ MAXD ];
+  double x[ MAXD ];
   void show(){
     rep( i ,0, dim){
       if( i ) cout << "\t";
-      printf("x[%d]=%d",i, x[i]);
+      printf("x[%d]=%lf",i, x[i]);
     }
-    printf(", class = %d", x[dim]);
+    printf(", class = %lf", x[dim]);
     cout <<endl;
   }
   bool operator==( pt &c) const{
@@ -58,7 +58,7 @@ struct cmp{
     return a.x[d] < b.x[d];
   }
 };
-string toString( int d){
+string toString( lf d){
   stringstream ss;
   ss << d;
   return ss.str();
@@ -68,6 +68,8 @@ void getInfo( node *root, node *father=nullptr ){
   string info = "";
   if(root->l != nullptr || root->r!=nullptr){
     info = "> "+toString( root->p.x[root->d])+"  * ";
+  }else{
+    info = " class = "+toString(root->p.x[dim])+" * ";
   }
   info.PB('[');
   rep( i, 0, dim){
@@ -109,16 +111,15 @@ struct kdtree{
     for( pt a: pts) a.show();
   }
   node* build(int id,  int l, int r, int d){
-
+  //  debug(d);
     node *root;
     if( l >= r){
-      cout << l <<  "  " << r <<endl;
       return new node(id, d, pts[l] );
     }
     int nd = (d+1)%dim;
     int mid = r + (l-r)/2;
     nth_element(pts.begin()+l, pts.begin()+mid,pts.begin()+r+1, cmp(d));
-    int flag = pts[l].x[dim];
+    lf flag = pts[l].x[dim];
     rep(i, l+1, r+1){
       if( pts[i].x[dim]!= flag) {
         flag = -1; break;
@@ -131,8 +132,8 @@ struct kdtree{
     // storage partitions
     partitions.PB( {d, pts[mid].x[d]});
     root = new node(id, d, pts[mid]);
-    root->l = build(id*2,l, mid-1, d^1);
-    root->r = build(id*2+1, mid+1, r, d^1);
+    root->l = build(id*2,l, mid-1, nd);
+    root->r = build(id*2+1, mid+1, r, nd);
     return root;
   }
   void findNearest( pt &to, node *root,  pt &res, lf &dis, int d=0){
@@ -213,7 +214,6 @@ int main(){
     lf dis = oo;
     pt res;
     T.findNearest(T.pts[el], root, res, dis);
-
     count+= check(T.pts, T.pts[el], res, dis);
   }
   cout << "The software has passed "<< count << " Cases over " << rnd.size() << " Cases "<<endl;
