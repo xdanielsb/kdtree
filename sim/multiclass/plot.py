@@ -20,8 +20,8 @@ def init():
     miny, maxy = float('inf'), -float('inf')
     for l in fp[1:]:
         if( len(l) == 0):continue;
-        x, y, cl = [ int(a) for a in l.split()]
-        colors_points.append(colors[cl-1])
+        x, y, cl = [ float(a) for a in l.split()]
+        colors_points.append(colors[int(cl)-1])
         minx = min( x, minx)
         miny = min( y, miny)
         maxx = max( x, maxx)
