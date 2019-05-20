@@ -115,8 +115,8 @@ struct kdtree{
     // storage partitions
     partitions.PB( {d, pts[mid].x[d]});
     root = new node(id, d, pts[mid]);
-    root->l = build(id*2,l, mid-1, d^1);
-    root->r = build(id*2+1, mid+1, r, d^1);
+    root->l = build(id*2,l, mid-1, nd);
+    root->r = build(id*2+1, mid+1, r, nd);
     return root;
   }
   void findNearest( pt &to, node *root,  pt &res, lf &dis, int d=0){

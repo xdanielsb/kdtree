@@ -206,7 +206,7 @@ int main(){
 
   // find nearest of three random points
   set< int > rnd; int tot =n/2;
-  while( rnd.size() <= tot){
+  while( rnd.size() < tot){
     rnd.insert( getRnd(n));
   }
   int count = 0;
@@ -216,7 +216,8 @@ int main(){
     T.findNearest(T.pts[el], root, res, dis);
     count+= check(T.pts, T.pts[el], res, dis);
   }
-  cout << "The software has passed "<< count << " Cases over " << rnd.size() << " Cases "<<endl;
+
+  cout << "The software has passed "<< count << " Cases over " << tot << " Cases "<<endl;
 
   return 0;
 }
