@@ -1,29 +1,11 @@
 # kdtree
 
-This repo has the content regarding the presentation of KD-Tree that will take place at 'Universidad Distrital' contains slides, a simulation, and exercises regarding k-dimensional-tree. The repository is composed by:
- - sim: it has the my own implementation of kd-tree 'code.cpp' and the packages need to simulate; see after to learn how to run the simulation  
- - slides: coming soon
-
-
-In the folder sim/ run the following command
-
-```sh
- $ ./run.sh 10
-```
-
-where 10 means the number of pseudo random points that you want generate to see the behaviour of kd-tree.
-
-
-## Example demo
-
-
-
-## Dependencies
-
-```sh
-  $ pip install -r requirements
-  $ sudo sh dependencies
-```
+This repo has the content regarding the presentation of KD-Tree that will take place at 'Universidad Distrital'. The repository is composed by:
+ - articles: contains some articles, slides of different universities regarding kdtree
+ - implementation: my implementation of kdtree in different languages; more are comming...
+ - proofs: some demonstrations to validate the efficiency of kdtree
+ - simulation: show the process of construction of kdtree for oneclass and multiclass data
+ - slides: presentation and code used in the slides
 
 
 ## License
@@ -31,4 +13,4 @@ where 10 means the number of pseudo random points that you want generate to see 
 
 ## Contributions
 
-My own implementation has some problems regarding memory usage and maybe some bugs that I have not discovered yet, I'll really appreciate your pull request or comment.
+Maybe there are some bugs or stuff to improve that I have not discovered yet, I shall  appreciate your pull request or comments.
