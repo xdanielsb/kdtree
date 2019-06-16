@@ -4,7 +4,9 @@ import java.util.Comparator;
 import java.util.Collections;
 
 import java.util.*;
-
+/**
+* @author Daniel Santos
+**/
 public class TestKDTree {
   private class Node{
     Integer id, d;

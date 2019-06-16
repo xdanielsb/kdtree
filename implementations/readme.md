@@ -12,3 +12,11 @@ $ export PATH=$JAVA_HOME/bin:$PATH
 $ javac nameFile.java
 $ java nameFile
 ```
+
+## Go
+```sh
+$ export PATH=$PATH:/opt/go/bin
+$ export GOPATH=$HOME/Documents/golang
+$ export GOROOT=/opt/go
+$ go run nameFile.go
+```
