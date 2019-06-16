@@ -7,6 +7,10 @@ This repo has the content regarding the presentation of KD-Tree that will take p
  - simulation: show the process of construction of kdtree for oneclass and multiclass data
  - slides: presentation and code used in the slides
 
+## Contest
+Some real world problems to apply kdtrees
+
+https://vjudge.net/contest/306898
 
 ## License
  - GPL V3
