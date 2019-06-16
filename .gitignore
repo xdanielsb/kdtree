@@ -11,3 +11,4 @@ sim/multiclass/nodes
 sim/multiclass/relations
 sim/multiclass/lines
 sim/multiclass/test-output/
+*.class
