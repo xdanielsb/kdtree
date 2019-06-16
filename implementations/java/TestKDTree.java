@@ -43,7 +43,7 @@ public class TestKDTree {
       Node root;
       if( l == r) return new Node( id, d, this.pts.get(l));
       Integer nd = (d+1)%dim, mid = r +(l-r)/2;
-      Collections.sort(pts,new Cmp(d));
+      Collections.sort(pts.subList(l, mid),new Cmp(d));
       root = new Node( id, d , this.pts.get(mid));
       root.l = build(id*2, l, mid-1, nd);
       root.r = build(id*2+1, r, mid+1, nd);
