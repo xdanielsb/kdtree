@@ -26,7 +26,7 @@ class kdtree:
         if( l == r ): return node(id, d, self.pts[l])
         nd = (d+1)%self.dim
         mid = r +(l-r)/2
-        self.pts.sort()
+        sorted(pts[l:mid+1], key = lambda x: x[d])
         root = node(id, d,pts[mid])
         root.l = build( id*2, l, mid-1, nd)
         root.r = build( id*2+1, mid+1, r, nd)
