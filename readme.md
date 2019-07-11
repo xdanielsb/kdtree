@@ -12,6 +12,28 @@ Some real world problems to apply kdtrees
 
 https://vjudge.net/contest/306898
 
+
+## simulation
+to read the instruction to run the  the simulation visit simulation// The script generate a view of s
+ - Division of space
+ - Tree representation
+  - N number of random data
+  - C number of types
+
+ I have tested the simulation  1 <= N  <= 100000, building the assets under a second, you can do it with N greater, but will take more than a second in a conventional machine.
+
+
+Here some examples
+
+#### One class, N = 10, C = 1
+<img src="simulation/img-readme/one_class_1.png">
+
+#### Multi class, N = 20, C = 4
+<img src="simulation/img-readme/multiclass_4.png">
+
+#### Multi class, N = 10, C = 2
+<img src="simulation/img-readme/multiclass_2.png">
+
 ## License
  - GPL V3
 
