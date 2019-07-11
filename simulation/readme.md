@@ -1,6 +1,6 @@
 # Simulation
 
-Here is the way to execute the Simulation
+Here is the way to execute the Simulation, the code run under my implementation of kdtree in c++ to see the it visit /implementations/c++/t.cpp
 
 
 ## One class
@@ -21,7 +21,7 @@ Here is the way to execute the Simulation
 - N is the number of random data that you want
 - C is the number of classes that you want
 
-#### Multi class, N = 20, C = 4
+#### Multi class, N = 20, C = 3
 <img src="img-readme/multiclass_4.png">
 
 #### Multi class, N = 10, C = 2

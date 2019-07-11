@@ -28,7 +28,7 @@ Here some examples
 #### One class, N = 10, C = 1
 <img src="simulation/img-readme/one_class_1.png">
 
-#### Multi class, N = 20, C = 4
+#### Multi class, N = 20, C = 3
 <img src="simulation/img-readme/multiclass_4.png">
 
 #### Multi class, N = 10, C = 2
