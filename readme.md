@@ -4,8 +4,10 @@ This repo has the content regarding the presentation of KD-Tree that will take p
  - articles: contains some articles, slides of different universities regarding kdtree
  - implementation: my implementation of kdtree in different languages; more are comming...
  - proofs: some demonstrations to validate the efficiency of kdtree
+ - quiz: the test that was done after the lecture
  - simulation: show the process of construction of kdtree for oneclass and multiclass data
  - slides: presentation and code used in the slides
+ - solutions vjudge: here some solutions of the proposed exercises
 
 ## Contest
 Some real world problems to apply kdtrees
