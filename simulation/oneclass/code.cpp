@@ -106,7 +106,8 @@ struct kdtree{
   }
   node* build(int id,  int l, int r, int d){
     node *root;
-    if( l >= r){
+    if( l > r ) return nullptr;
+    if( l == r){
       return new node(id, d, pts[l] );
     }
     int nd = (d+1)%dim;
